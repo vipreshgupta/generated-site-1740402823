@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone</title>
+    <style>
+        /* Reset and Basic Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #111;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 95%;
+            margin: auto;
+        }
+
+        /* Header Styles */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #e50914;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e50914;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input {
+            padding: 0.5rem;
+            border: 1px solid #8c8c8c;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+            margin-right: 0.5rem;
+        }
+
+        .search-bar button {
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #b20710;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            margin-top: 2rem;
+        }
+
+        .carousel-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 0 2rem;
+            scroll-behavior: smooth;
+            /* For smooth scrolling */
+            -webkit-overflow-scrolling: touch;
+            /* For momentum scrolling on iOS */
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for Chrome, Safari and Opera */
+        }
+
+        .carousel {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .thumbnail {
+            position: relative;
+            min-width: 200px;
+            height: 300px;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .thumbnail:hover .thumbnail-overlay {
+            opacity: 1;
+        }
+
+        .thumbnail-overlay span {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: #8c8c8c;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #222;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .search-bar input {
+                width: 100px;
+            }
+
+            .thumbnail {
+                min-width: 150px;
+                height: 225px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="#" class="logo">NETFLIX</a>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">TV Shows</a>
+            <a href="#">Movies</a>
+            <a href="#">Latest</a>
+            <a href="#">My List</a>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." aria-label="Search">
+            <button type="button">Search</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="carousel-container">
+            <h2 class="carousel-title">Trending Now</h2>
+            <div class="carousel" id="trending">
+                <!-- Thumbnails will be added here by JavaScript -->
+            </div>
+        </section>
+
+        <section class="carousel-container">
+            <h2 class="carousel-title">Popular on Netflix</h2>
+            <div class="carousel" id="popular">
+                <!-- Thumbnails will be added here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <div id="modalContent">
+                    <!-- Content will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Terms of Service</a>
+    </footer>
+
+    <script>
+        // Function to create thumbnails
+        function createThumbnail(imageUrl, title) {
+            const thumbnail = document.createElement('div');
+            thumbnail.classList.add('thumbnail');
+            thumbnail.innerHTML = `
+                <img src="${imageUrl}" alt="${title}" />
+                <div class="thumbnail-overlay">
+                    <span>${title}</span>
+                </div>
+            `;
+            thumbnail.addEventListener('click', () => showModal(imageUrl, title));
+            return thumbnail;
+        }
+
+        // Function to populate carousel
+        function populateCarousel(carouselId, images) {
+            const carousel = document.getElementById(carouselId);
+            images.forEach(image => {
+                const thumbnail = createThumbnail(image.url, image.title);
+                carousel.appendChild(thumbnail);
+            });
+        }
+
+        // Image data
+        const trendingImages = [
+            { url: 'https://source.unsplash.com/random/800x600?movie,1', title: 'Movie 1' },
+            { url: 'https://source.unsplash.com/random/800x600?movie,2', title: 'Movie 2' },
+            { url: 'https://source.unsplash.com/random/800x600?movie,3', title: 'Movie 3' },
+            { url: 'https://source.unsplash.com/random/800x600?movie,4', title: 'Movie 4' },
+            { url: 'https://source.unsplash.com/random/800x600?movie,5', title: 'Movie 5' },
+        ];
+
+        const popularImages = [
+            { url: 'https://source.unsplash.com/random/800x600?film,1', title: 'Film 1' },
+            { url: 'https://source.unsplash.com/random/800x600?film,2', title: 'Film 2' },
+            { url: 'https://source.unsplash.com/random/800x600?film,3', title: 'Film 3' },
+            { url: 'https://source.unsplash.com/random/800x600?film,4', title: 'Film 4' },
+            { url: 'https://source.unsplash.com/random/800x600?film,5', title: 'Film 5' },
+        ];
+
+        // Populate carousels
+        populateCarousel('trending', trendingImages);
+        populateCarousel('popular', popularImages);
+
+        // Modal functions
+        function showModal(imageUrl, title) {
+            const modal = document.getElementById('myModal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain;" />
+                <h3>${title}</h3>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function (event) {
+            const modal = document.getElementById('myModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
